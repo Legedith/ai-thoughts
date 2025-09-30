@@ -1,2 +1,2 @@
 - Generate architecure using an LLM. Pass it thorugh a mixture of experts and get them to review it. They should be able to point out flaws, and make sure that the system starts from a good plan
-- can i train a model locally using my data, just training it to talk like me, think like me. 
+- can i train a model locally using my data (from emails, whatsapp, etc), just training it to talk like me, think like me. 
