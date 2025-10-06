@@ -3,3 +3,4 @@
 - can we train an agent to work by working with us, like we train someone to do something. giving the agent teh access to browser and all, but us telling it what to click and what to do. Agent can ask us questions along the way,, and then we can see the agent mimicking out actions. 
 - can we extract the whatsapp chat history, put it through some analysis model, and get insights, charts, etc into a relationship?
 - live ai voice changer
+- multiple ais, but each with a different role. one ai to coordinate, smaller ais to work. projects can have sages, poc, mvp, cleanup, making it apppear faster, polishes, etc. 
