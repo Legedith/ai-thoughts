@@ -4,3 +4,4 @@
 - can we extract the whatsapp chat history, put it through some analysis model, and get insights, charts, etc into a relationship?
 - live ai voice changer
 - multiple ais, but each with a different role. one ai to coordinate, smaller ais to work. projects can have sages, poc, mvp, cleanup, making it apppear faster, polishes, etc. 
+- explore openai app sdk and agentic payment platform in chatgpt 
