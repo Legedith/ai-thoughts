@@ -6,3 +6,4 @@
 - multiple ais, but each with a different role. one ai to coordinate, smaller ais to work. projects can have sages, poc, mvp, cleanup, making it apppear faster, polishes, etc. 
 - explore openai app sdk and agentic payment platform in chatgpt 
 - did a whatsapp analysis of 2.5 years of relationship chats. Figured out lots of patters. had to switch to key based encryptio, crypt15, and decoded with a custom tool found on github. was able to see the db and export the tables. one interesting thing would be to take all of my text, just my text and analyse it with gemini. FIgure out trends in my thining and ideologies accross time. 
+- what the f are vector embeddings? how do they differ from normal ones. why csnt we do any arithmetic on them, why are two embeddings always so close. why do most people not feel the effect (because of top k selections)? are there bidirectional embeddings? if there were, ehat could be done with them?
