@@ -1,4 +1,4 @@
-- Generate architecure using an LLM. Pass it thorugh a mixture of experts and get them to review it. They should be able to point out flaws, and make sure that the system starts from a good plan
+- Generate architecure using an LLM. Pass it thorugh a mixture of experts and get them to review it. They should be able to point out flaws, and make sure that the system starts from a good plan, found this: https://gwern.net/ai-daydreaming
 - can i train a model locally using my data (from emails, whatsapp, etc), just training it to talk like me, think like me. 
 - can we train an agent to work by working with us, like we train someone to do something. giving the agent teh access to browser and all, but us telling it what to click and what to do. Agent can ask us questions along the way,, and then we can see the agent mimicking out actions. 
 - can we extract the whatsapp chat history, put it through some analysis model, and get insights, charts, etc into a relationship?
@@ -6,4 +6,6 @@
 - multiple ais, but each with a different role. one ai to coordinate, smaller ais to work. projects can have sages, poc, mvp, cleanup, making it apppear faster, polishes, etc. 
 - explore openai app sdk and agentic payment platform in chatgpt 
 - did a whatsapp analysis of 2.5 years of relationship chats. Figured out lots of patters. had to switch to key based encryptio, crypt15, and decoded with a custom tool found on github. was able to see the db and export the tables. one interesting thing would be to take all of my text, just my text and analyse it with gemini. FIgure out trends in my thining and ideologies accross time. 
-- what the f are vector embeddings? how do they differ from normal ones. why csnt we do any arithmetic on them, why are two embeddings always so close. why do most people not feel the effect (because of top k selections)? are there bidirectional embeddings? if there were, ehat could be done with them?
+- what the f are vector embeddings? how do they differ from normal ones. why csnt we do any arithmetic on them, why are two embeddings always so close. why do most people not feel the effect (because of top k selections)? are there bidirectional embeddings? if there were, ehat could be done with them? #learn
+- checkout https://github.com/neuphonic for tts models on device #tolearn
+- Lean the ins-outs of mcp in depth, also this: https://blog.cloudflare.com/code-mode/
