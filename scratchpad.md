@@ -9,4 +9,4 @@
 - what the f are vector embeddings? how do they differ from normal ones. why csnt we do any arithmetic on them, why are two embeddings always so close. why do most people not feel the effect (because of top k selections)? are there bidirectional embeddings? if there were, ehat could be done with them? #learn
 - checkout https://github.com/neuphonic for tts models on device #tolearn
 - Lean the ins-outs of mcp in depth, also this: https://blog.cloudflare.com/code-mode/
-- agents that can be hired for very specific tasks by anyone, on a per use basis. ex. a BDE hiring a research agent for 50 rs oer report to get an amazing ppt for an upcoming meet, a data scientist hiring an agent for data cleaning and analysis 
+- agents that can be hired for very specific tasks by anyone, on a per use basis. ex. a BDE hiring a research agent for 50 rs oer report to get an amazing ppt for an upcoming meet, a data scientist hiring an agent for data cleaning and analysis. maybe multiple people can bet their agents, bid for the cotract, show report, and the user can pick one from the pool 
