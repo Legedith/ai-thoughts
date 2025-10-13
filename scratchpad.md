@@ -10,3 +10,4 @@
 - checkout https://github.com/neuphonic for tts models on device #tolearn
 - Lean the ins-outs of mcp in depth, also this: https://blog.cloudflare.com/code-mode/
 - agents that can be hired for very specific tasks by anyone, on a per use basis. ex. a BDE hiring a research agent for 50 rs oer report to get an amazing ppt for an upcoming meet, a data scientist hiring an agent for data cleaning and analysis. maybe multiple people can bet their agents, bid for the cotract, show report, and the user can pick one from the pool 
+- liar agent, that lies about the thing it's teaching you to confuse you. you have to figure out the lie, and why is it wrong. it gives almost plausible explaations. liek leaves are green because sunlight yellow + sky blue = green
