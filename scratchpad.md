@@ -21,3 +21,4 @@ A Case Study on the Colossal Clean Crawled Corpu; what of we take this a step fu
 - guitar analogy playing itself as a way to explain that llms have no way to think or play music on their own. that they are dummies, no desire even if they are capable of producing such wonderful things, since they dont have desire or mechanics, they dont do it 
 - live translation in user's own voice, user can themselves create their voice clone, speak something, anf the clone can give response in the user's voice
 - write and index your stories, the fun ones, the empathy ones. https://youtu.be/Nj-hdQMa3uA
+- teach llms to play geo guesser. spook people by running on their photos
