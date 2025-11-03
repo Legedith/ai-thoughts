@@ -22,3 +22,4 @@ A Case Study on the Colossal Clean Crawled Corpu; what of we take this a step fu
 - live translation in user's own voice, user can themselves create their voice clone, speak something, anf the clone can give response in the user's voice
 - write and index your stories, the fun ones, the empathy ones. https://youtu.be/Nj-hdQMa3uA
 - teach llms to play geo guesser. spook people by running on their photos
+- Let LLM A/B test the UI, or let people collaborately modify a web page. Social experiment, see what we end up with.
