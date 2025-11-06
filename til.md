@@ -2,3 +2,4 @@
 - 29-09-2025 Salesforce has something called trailhead, open to external people as well
 - 29-09-2025 We can give a coding agent a personality of a renowned coder, and ask it to code/review like them
 - 07-10-2025 We can show progress, cache the results, allow programs to resume, allow programto detect changes and only work on deltas, precompute stuff, show a larger progress bar and finish early, etc to make the project appear more robust. 
+- https://www.astralcodexten.com/p/the-bloomers-paradox?utm_source=share&utm_medium=android&r=1zpbk&triedRedirect=true
