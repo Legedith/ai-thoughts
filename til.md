@@ -3,3 +3,6 @@
 - 29-09-2025 We can give a coding agent a personality of a renowned coder, and ask it to code/review like them
 - 07-10-2025 We can show progress, cache the results, allow programs to resume, allow programto detect changes and only work on deltas, precompute stuff, show a larger progress bar and finish early, etc to make the project appear more robust. 
 - https://www.astralcodexten.com/p/the-bloomers-paradox?utm_source=share&utm_medium=android&r=1zpbk&triedRedirect=true
+I should have started with consulting, and then used learnings from that to build products.
+Even if you are building a product, build it with a specific customer in mind. Building with a generic / hypothetical customer can mean that you build for no one
+Our attempts to build a “generic enough” product were to no avail, as each customer wanted their own set of customisations. And we made the mistake of trying to tweak the entire product to fit these customisations, rather than hack.
