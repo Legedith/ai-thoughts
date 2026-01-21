@@ -30,3 +30,4 @@ A Case Study on the Colossal Clean Crawled Corpu; what of we take this a step fu
 - "Train people by asking them to predict what the model will get right/wrong, and validate" - s anand, can be an interesting first lesson for non coders, like dad and brother
 - how well do llms encourage stupidity. 
 - dunning kougar effect tested on llms
+- build an ai agent, and let it run in a simulated environment, collecting results, understanding the task, fixing itself up. give it only the knobs, start with zero customisation.. let it come up with the rules, with yhe prompts, etc to get as close to the desired results as possible. 
