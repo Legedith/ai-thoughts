@@ -31,4 +31,4 @@ A Case Study on the Colossal Clean Crawled Corpu; what of we take this a step fu
 - how well do llms encourage stupidity. 
 - dunning kougar effect tested on llms
 - build an ai agent, and let it run in a simulated environment, collecting results, understanding the task, fixing itself up. give it only the knobs, start with zero customisation.. let it come up with the rules, with yhe prompts, etc to get as close to the desired results as possible. 
-- ask ai to describe me in excruciating detail, and yhen ask another ai to create a photo of me. repeat this till i get it to generate the exact same photo.
+- ask ai to describe me in excruciating detail, and yhen ask another ai to create a photo of me. repeat this till i get it to generate the exact same photo. result = 80% match plus better results when giving description alongside the reference image. description in a separate md file on this repo.
