@@ -24,6 +24,13 @@ jobs:
             echo "Proof placeholder found"
             exit 1
           fi
+      - name: Install pinned Lean and generate Lake manifest
+        shell: bash
+        run: |
+          curl https://elan.lean-lang.org/elan-init.sh -sSf | sh -s -- -y --default-toolchain none
+          export PATH="$HOME/.elan/bin:$PATH"
+          cd lonely-runner-lean
+          lake update
       - name: Build and independently kernel-check
         uses: leanprover/lean-action@v1
         with:
