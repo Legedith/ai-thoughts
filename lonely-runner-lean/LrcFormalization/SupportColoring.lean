@@ -42,7 +42,9 @@ theorem pullback_pair_zero
     {u v : V} (hu : u ∈ S) (hv : v ∈ S) (huv : u ≠ v) :
     A.expectation (fun ω => A.value (color u) ω * A.value (color v) ω) = 0 := by
   apply A.pairZero
-  exact (hproper S hS) hu hv huv
+  intro hsame
+  apply huv
+  exact (hproper S hS) hu hv hsame
 
 /-- The pulled-back amplitude remains pointwise bounded by one. -/
 theorem pullback_bound
