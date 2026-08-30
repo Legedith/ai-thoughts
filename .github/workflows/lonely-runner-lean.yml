@@ -1,0 +1,38 @@
+name: Lonely Runner Lean kernel check
+
+on:
+  push:
+    branches: ["lonely-runner-lean-check"]
+    paths:
+      - "lonely-runner-lean/**"
+      - ".github/workflows/lonely-runner-lean.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject placeholders
+        shell: bash
+        run: |
+          if grep -R --include='*.lean' -nE '\b(sorry|admit)\b' lonely-runner-lean; then
+            echo "Proof placeholder found"
+            exit 1
+          fi
+      - name: Build and independently kernel-check
+        uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: lonely-runner-lean
+          auto-config: false
+          build: true
+          test: false
+          lint: false
+          leanchecker: true
+          axiom-audit: true
+          axiom-audit-root: LonelyRunner
+          use-mathlib-cache: true
