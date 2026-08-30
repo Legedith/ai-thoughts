@@ -90,16 +90,14 @@ theorem expectation_amplitude
     (hEone : E (1 : Ω → ℝ) = 1)
     (hEH : E H = 0) :
     E (fun ω => amplitude s (H ω)) = 1 / (1 + s) := by
-  have hden : 1 + s ≠ 0 := by linarith
   have hfun :
       (fun ω => amplitude s (H ω)) =
-        (1 / (1 + s)) • ((1 : Ω → ℝ) + s • H) := by
+        (1 / (1 + s)) • (1 : Ω → ℝ) + (s / (1 + s)) • H := by
     funext ω
-    simp only [amplitude]
-    field_simp [hden]
+    simp [amplitude]
     ring
   rw [hfun]
-  simp only [map_smul, map_add]
+  simp only [map_add, map_smul]
   rw [hEone, hEH]
   ring
 
@@ -135,9 +133,9 @@ theorem expectation_pair_cancellation_of_covariance
   change (1 / (1 + s) ^ 2) *
       (1 + s * 0 + s * 0 + s ^ 2 * E C) = 0
   rw [show E C = -β by simpa [C] using hE₁₂]
-  have hzero : 1 + s ^ 2 * (-β) = 0 := by
+  have hinner : 1 + s * 0 + s * 0 + s ^ 2 * (-β) = 0 := by
     nlinarith [hscale]
-  rw [hzero]
+  rw [hinner]
   ring
 
 /--
