@@ -118,17 +118,21 @@ theorem pair_switchMonochromatic_iff_switchedValue_eq
     · refine ⟨FourierSign.pos, ?_⟩
       intro w hw
       simp only [Finset.mem_insert, Finset.mem_singleton] at hw
-      rcases hw with rfl | rfl
-      · simpa [FourierSign.value] using huone
-      · have hvone : switchedValue (σ v) (η v) = 1 :=
+      rcases hw with hwu | hwv
+      · subst w
+        simpa [FourierSign.value] using huone
+      · subst w
+        have hvone : switchedValue (σ v) (η v) = 1 :=
           hsame.symm.trans huone
         simpa [FourierSign.value] using hvone
     · refine ⟨FourierSign.neg, ?_⟩
       intro w hw
       simp only [Finset.mem_insert, Finset.mem_singleton] at hw
-      rcases hw with rfl | rfl
-      · simpa [FourierSign.value] using huneg
-      · have hvneg : switchedValue (σ v) (η v) = -1 :=
+      rcases hw with hwu | hwv
+      · subst w
+        simpa [FourierSign.value] using huneg
+      · subst w
+        have hvneg : switchedValue (σ v) (η v) = -1 :=
           hsame.symm.trans huneg
         simpa [FourierSign.value] using hvneg
 
