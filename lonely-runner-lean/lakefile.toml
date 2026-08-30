@@ -1,0 +1,11 @@
+name = "LrcFormalization"
+version = "0.1.0"
+defaultTargets = ["LrcFormalization"]
+
+[[lean_lib]]
+name = "LrcFormalization"
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "v4.33.1"
