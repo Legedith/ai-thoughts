@@ -4,7 +4,7 @@ import LrcFormalization.GlobalPhaseFilter
 # Signed phase switching
 
 A vertex switch `η_v ∈ {±1}` changes the phase contribution of a Fourier sign
-`σ_v` from `σ_v` to `σ_v η_v`.  If the switched signs are constant on a
+`σ_v` from `σ_v` to `σ_v η_v`. If the switched signs are constant on a
 relation support of size at least two, the first-harmonic phase filter removes
 that relation exactly: its phase imbalance has absolute value at least two.
 
@@ -83,11 +83,15 @@ theorem switchMonochromatic_not_allowed
   rw [hsum] at hallowed
   cases hτ : τ with
   | pos =>
-      simp [FourierSign.value, hτ, AllowedImbalance] at hallowed
-      omega
+      have ha' :
+          (S.card : ℤ) = 0 ∨ (S.card : ℤ) = 1 ∨ (S.card : ℤ) = -1 := by
+        simpa [FourierSign.value, hτ, AllowedImbalance] using hallowed
+      rcases ha' with h0 | h1 | hn1 <;> omega
   | neg =>
-      simp [FourierSign.value, hτ, AllowedImbalance] at hallowed
-      omega
+      have ha' :
+          -(S.card : ℤ) = 0 ∨ -(S.card : ℤ) = 1 ∨ -(S.card : ℤ) = -1 := by
+        simpa [FourierSign.value, hτ, AllowedImbalance] using hallowed
+      rcases ha' with h0 | h1 | hn1 <;> omega
 
 /-- The symbolic first-harmonic moment of such a support is exactly zero. -/
 theorem switchMonochromatic_filtered_vanishes
@@ -98,37 +102,45 @@ theorem switchMonochromatic_filtered_vanishes
   firstHarmonicMoment_eq_zero
     (switchMonochromatic_not_allowed hcard hmono)
 
-/-- The pair form used to translate a signed relation edge into a switch constraint. -/
-theorem pair_switchMonochromatic_iff
+/-- A two-point support is switch-monochromatic exactly when its switched values agree. -/
+theorem pair_switchMonochromatic_iff_switchedValue_eq
     (u v : V) (huv : u ≠ v)
     (σ η : V → FourierSign) :
     SwitchMonochromatic ({u, v} : Finset V) σ η ↔
-      η u |>.value * (η v).value = (σ u).value * (σ v).value := by
-  rw [← switchedValue_eq_iff_switch_product_eq_sign_product]
+      switchedValue (σ u) (η u) = switchedValue (σ v) (η v) := by
   constructor
   · rintro ⟨τ, hτ⟩
     have hu := hτ u (by simp)
     have hv := hτ v (by simp)
     exact hu.trans hv.symm
   · intro hsame
-    refine ⟨?_, ?_⟩
-    · exact if switchedValue (σ u) (η u) = 1 then
-        FourierSign.pos else FourierSign.neg
-    · intro w hw
+    rcases switchedValue_eq_one_or_neg_one (σ u) (η u) with huone | huneg
+    · refine ⟨FourierSign.pos, ?_⟩
+      intro w hw
       simp only [Finset.mem_insert, Finset.mem_singleton] at hw
       rcases hw with rfl | rfl
-      · by_cases hpos : switchedValue (σ u) (η u) = 1
-        · simp [hpos, FourierSign.value]
-        · rcases switchedValue_eq_one_or_neg_one (σ u) (η u) with hone | hneg
-          · exact (hpos hone).elim
-          · simp [hpos, hneg, FourierSign.value]
-      · have hvEq : switchedValue (σ v) (η v) = switchedValue (σ u) (η u) :=
-          hsame.symm
-        by_cases hpos : switchedValue (σ u) (η u) = 1
-        · simp [hpos, hvEq, FourierSign.value]
-        · rcases switchedValue_eq_one_or_neg_one (σ u) (η u) with hone | hneg
-          · exact (hpos hone).elim
-          · simp [hpos, hvEq, hneg, FourierSign.value]
+      · simpa [FourierSign.value] using huone
+      · have hvone : switchedValue (σ v) (η v) = 1 :=
+          hsame.symm.trans huone
+        simpa [FourierSign.value] using hvone
+    · refine ⟨FourierSign.neg, ?_⟩
+      intro w hw
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hw
+      rcases hw with rfl | rfl
+      · simpa [FourierSign.value] using huneg
+      · have hvneg : switchedValue (σ v) (η v) = -1 :=
+          hsame.symm.trans huneg
+        simpa [FourierSign.value] using hvneg
+
+/-- The pair form translating a signed relation edge into a switch constraint. -/
+theorem pair_switchMonochromatic_iff
+    (u v : V) (huv : u ≠ v)
+    (σ η : V → FourierSign) :
+    SwitchMonochromatic ({u, v} : Finset V) σ η ↔
+      (η u).value * (η v).value = (σ u).value * (σ v).value := by
+  exact (pair_switchMonochromatic_iff_switchedValue_eq u v huv σ η).trans
+    (switchedValue_eq_iff_switch_product_eq_sign_product
+      (σ u) (σ v) (η u) (η v))
 
 end
 
