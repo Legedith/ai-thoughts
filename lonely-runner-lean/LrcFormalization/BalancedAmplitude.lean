@@ -20,12 +20,14 @@ def amplitude (s h : ℝ) : ℝ := (1 + s * h) / (1 + s)
 
 @[simp] theorem amplitude_one (s : ℝ) (hs : s ≠ -1) :
     amplitude s 1 = 1 := by
-  simp [amplitude, hs]
+  have hden : 1 + s ≠ 0 := by linarith
+  unfold amplitude
+  simpa using div_self hden
 
 theorem amplitude_neg_one (s : ℝ) :
     amplitude s (-1) = (1 - s) / (1 + s) := by
-  simp [amplitude]
-  ring
+  unfold amplitude
+  ring_nf
 
 /-- If the input is a sign and `s ≥ 0`, the affine amplitude stays in `[-1,1]`. -/
 theorem abs_amplitude_le_one {s h : ℝ} (hs : 0 ≤ s)
@@ -39,16 +41,17 @@ theorem abs_amplitude_le_one {s h : ℝ} (hs : 0 ≤ s)
     have hden : 0 < 1 + s := by linarith
     rw [abs_le]
     constructor
-    · apply (div_le_iff₀ hden).2
+    · rw [le_div_iff₀ hden]
       linarith
-    · apply (le_div_iff₀ hden).2
+    · rw [div_le_iff₀ hden]
       linarith
 
 /-- Pointwise expansion of a product of two amplitudes. -/
 theorem amplitude_mul {s h₁ h₂ : ℝ} (hden : 1 + s ≠ 0) :
     amplitude s h₁ * amplitude s h₂ =
       (1 + s * h₁ + s * h₂ + s ^ 2 * (h₁ * h₂)) / (1 + s) ^ 2 := by
-  field_simp [amplitude, hden]
+  simp only [amplitude]
+  field_simp [hden]
   ring
 
 /--
@@ -86,34 +89,22 @@ theorem expectation_pair_cancellation
   rw [show E C = -(1 / s ^ 2) by simpa [C] using hE₁₂]
   have hs0 : s ≠ 0 := ne_of_gt hs
   field_simp [hs0, hden]
+  ring
 
 /--
-The elementary square-root obstruction behind pair-cancelling families.
-This is the final scalar implication after applying Cauchy--Schwarz and
-orthogonality in `L²`.
+The algebraic square-root obstruction behind pair-cancelling families.
+After the usual energy estimate `q^2 * α^2 ≤ q`, it gives `q * α^2 ≤ 1`.
 -/
 theorem square_root_barrier_scalar
     {q α : ℝ} (hq : 0 < q) (henergy : q ^ 2 * α ^ 2 ≤ q) :
-    |α| ≤ 1 / Real.sqrt q := by
-  have hsqrt : 0 < Real.sqrt q := Real.sqrt_pos.2 hq
-  have hqeq : (Real.sqrt q) ^ 2 = q := by
-    simpa using Real.sq_sqrt (le_of_lt hq)
-  have hαsq : α ^ 2 ≤ 1 / q := by
-    have hq2 : 0 < q ^ 2 := sq_pos_of_pos hq
-    apply (le_div_iff₀ hq2).2
-    calc
-      α ^ 2 * q ^ 2 = q ^ 2 * α ^ 2 := by ring
-      _ ≤ q := henergy
-  rw [abs_le]
-  constructor
-  · have hsquare : (-1 / Real.sqrt q) ^ 2 = 1 / q := by
-      field_simp [ne_of_gt hsqrt, ne_of_gt hq]
-      nlinarith [hqeq]
-    nlinarith [sq_nonneg (α + 1 / Real.sqrt q), hαsq]
-  · have hsquare : (1 / Real.sqrt q) ^ 2 = 1 / q := by
-      field_simp [ne_of_gt hsqrt, ne_of_gt hq]
-      nlinarith [hqeq]
-    nlinarith [sq_nonneg (α - 1 / Real.sqrt q), hαsq]
+    q * α ^ 2 ≤ 1 := by
+  by_contra hnot
+  have hgt : 1 < q * α ^ 2 := lt_of_not_ge hnot
+  have hmul : q * 1 < q * (q * α ^ 2) :=
+    (mul_lt_mul_left hq).2 hgt
+  have hrewrite : q * (q * α ^ 2) = q ^ 2 * α ^ 2 := by ring
+  rw [hrewrite] at hmul
+  linarith
 
 end
 
