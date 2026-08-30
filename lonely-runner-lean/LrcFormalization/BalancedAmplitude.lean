@@ -20,7 +20,13 @@ def amplitude (s h : ℝ) : ℝ := (1 + s * h) / (1 + s)
 
 @[simp] theorem amplitude_one (s : ℝ) (hs : s ≠ -1) :
     amplitude s 1 = 1 := by
-  have hden : 1 + s ≠ 0 := by linarith
+  have hden : 1 + s ≠ 0 := by
+    intro h
+    apply hs
+    calc
+      s = (1 + s) - 1 := by ring
+      _ = 0 - 1 := by rw [h]
+      _ = -1 := by norm_num
   unfold amplitude
   simpa using div_self hden
 
@@ -100,10 +106,12 @@ theorem square_root_barrier_scalar
     q * α ^ 2 ≤ 1 := by
   by_contra hnot
   have hgt : 1 < q * α ^ 2 := lt_of_not_ge hnot
-  have hmul : q * 1 < q * (q * α ^ 2) :=
-    (mul_lt_mul_left hq).2 hgt
-  have hrewrite : q * (q * α ^ 2) = q ^ 2 * α ^ 2 := by ring
-  rw [hrewrite] at hmul
+  have hpositive : 0 < q * (q * α ^ 2 - 1) :=
+    mul_pos hq (sub_pos.mpr hgt)
+  have hnonpos : q * (q * α ^ 2 - 1) ≤ 0 := by
+    calc
+      q * (q * α ^ 2 - 1) = q ^ 2 * α ^ 2 - q := by ring
+      _ ≤ 0 := sub_nonpos.mpr henergy
   linarith
 
 end
