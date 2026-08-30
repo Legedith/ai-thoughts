@@ -3,11 +3,15 @@ import LrcFormalization.RieszFactor
 /-!
 # Quarter-phase separation of quadratic Fourier terms
 
-A common phase `π / 4` separates the two quadratic frequency types arising
-from products of shifted cosines.  After pairing against a linear functional
-that annihilates sine waves (for example integration against an even density),
-the sum-frequency term disappears exactly, while the difference-frequency
-term survives.  The level-one cosine coefficient loses only the fixed factor
+A phase `π / 4` separates the two quadratic frequency types arising from
+products of shifted cosines.  There are two useful forms.
+
+* Pairing one shifted product against a sine-annihilating linear functional
+  removes its sum-frequency term.
+* Averaging the two phases `±π / 4` removes the sum-frequency term pointwise,
+  with no symmetry hypothesis on the later pairing.
+
+In both forms the level-one cosine coefficient loses only the fixed factor
 `√2 / 2`.
 -/
 
@@ -18,11 +22,18 @@ noncomputable section
 /-- The common phase used to remove quadratic sum frequencies. -/
 def quarterPhase : ℝ := Real.pi / 4
 
-/-- A cosine shifted by a quarter phase is the cosine-sine difference. -/
+/-- A cosine shifted by a positive quarter phase is a cosine-sine difference. -/
 theorem cos_add_quarterPhase (x : ℝ) :
     Real.cos (x + quarterPhase) =
       (Real.sqrt 2 / 2) * (Real.cos x - Real.sin x) := by
   simp [quarterPhase, Real.cos_add]
+  ring
+
+/-- A cosine shifted by a negative quarter phase is a cosine-sine sum. -/
+theorem cos_sub_quarterPhase (x : ℝ) :
+    Real.cos (x - quarterPhase) =
+      (Real.sqrt 2 / 2) * (Real.cos x + Real.sin x) := by
+  simp [quarterPhase, Real.cos_sub]
   ring
 
 /-- Product identity separating a difference frequency from a sum frequency. -/
@@ -31,6 +42,28 @@ theorem cos_add_quarterPhase_mul (x y : ℝ) :
       (Real.cos (x - y) - Real.sin (x + y)) / 2 := by
   rw [cos_add_quarterPhase, cos_add_quarterPhase]
   rw [Real.cos_sub, Real.sin_add]
+  have hsqrt : (Real.sqrt 2) ^ 2 = (2 : ℝ) :=
+    Real.sq_sqrt (by norm_num)
+  nlinarith
+
+/-- Symmetric quarter-phase averaging keeps the linear cosine at constant strength. -/
+theorem symmetric_quarterPhase_linear (x : ℝ) :
+    (Real.cos (x + quarterPhase) + Real.cos (x - quarterPhase)) / 2 =
+      (Real.sqrt 2 / 2) * Real.cos x := by
+  rw [cos_add_quarterPhase, cos_sub_quarterPhase]
+  ring
+
+/--
+Symmetric averaging over the phases `±π / 4` removes the quadratic
+sum-frequency term pointwise and leaves exactly half the difference frequency.
+-/
+theorem symmetric_quarterPhase_quadratic (x y : ℝ) :
+    (Real.cos (x + quarterPhase) * Real.cos (y + quarterPhase) +
+        Real.cos (x - quarterPhase) * Real.cos (y - quarterPhase)) / 2 =
+      Real.cos (x - y) / 2 := by
+  rw [cos_add_quarterPhase, cos_add_quarterPhase,
+    cos_sub_quarterPhase, cos_sub_quarterPhase]
+  rw [Real.cos_sub]
   have hsqrt : (Real.sqrt 2) ^ 2 = (2 : ℝ) :=
     Real.sq_sqrt (by norm_num)
   nlinarith
