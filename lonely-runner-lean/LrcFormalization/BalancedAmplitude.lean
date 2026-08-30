@@ -3,12 +3,13 @@ import Mathlib
 /-!
 # Pair-cancelling bounded amplitudes
 
-This file isolates the finite algebraic core of the proposed correlated-amplitude
-Riesz-product construction for the Lonely Runner Conjecture.
+This file isolates the finite algebraic core of correlated-amplitude
+Riesz-product constructions for the Lonely Runner Conjecture.
 
-No analytic Lonely Runner estimate is asserted here. The main theorem says that
-an affine transform of centred variables with covariance `-1 / s^2` has exactly
-zero mixed second moment.
+No analytic Lonely Runner estimate is asserted here. The main identities show
+that an affine transform of bounded centred variables has a common positive
+mean and exactly zero mixed second moment when its covariance is tuned to the
+scale of the transform.
 -/
 
 namespace LonelyRunner.CorrelatedAmplitude
@@ -52,6 +53,25 @@ theorem abs_amplitude_le_one {s h : ℝ} (hs : 0 ≤ s)
     · rw [div_le_iff₀ hden]
       linarith
 
+/-- The sign hypothesis can be weakened to the interval bound `|h| ≤ 1`. -/
+theorem abs_amplitude_le_one_of_abs_le_one {s h : ℝ} (hs : 0 ≤ s)
+    (hh : |h| ≤ 1) :
+    |amplitude s h| ≤ 1 := by
+  have hden : 0 < 1 + s := by linarith
+  have hbounds : -1 ≤ h ∧ h ≤ 1 := (abs_le.mp hh)
+  rw [abs_le]
+  constructor
+  · unfold amplitude
+    rw [le_div_iff₀ hden]
+    have hnonneg : 0 ≤ s * (h + 1) := by
+      exact mul_nonneg hs (by linarith [hbounds.1])
+    nlinarith
+  · unfold amplitude
+    rw [div_le_iff₀ hden]
+    have hnonneg : 0 ≤ s * (1 - h) := by
+      exact mul_nonneg hs (by linarith [hbounds.2])
+    nlinarith
+
 /-- Pointwise expansion of a product of two amplitudes. -/
 theorem amplitude_mul {s h₁ h₂ : ℝ} (hden : 1 + s ≠ 0) :
     amplitude s h₁ * amplitude s h₂ =
@@ -60,22 +80,44 @@ theorem amplitude_mul {s h₁ h₂ : ℝ} (hden : 1 + s ≠ 0) :
   field_simp [hden]
   ring
 
-/--
-Exact pair cancellation under a normalized linear expectation.
+/-- A centred input has transformed mean `1 / (1 + s)`. -/
+theorem expectation_amplitude
+    {Ω : Type*}
+    (E : (Ω → ℝ) →ₗ[ℝ] ℝ)
+    (H : Ω → ℝ)
+    {s : ℝ}
+    (hs : 0 < s)
+    (hEone : E (1 : Ω → ℝ) = 1)
+    (hEH : E H = 0) :
+    E (fun ω => amplitude s (H ω)) = 1 / (1 + s) := by
+  have hden : 1 + s ≠ 0 := by linarith
+  have hfun :
+      (fun ω => amplitude s (H ω)) =
+        (1 / (1 + s)) • ((1 : Ω → ℝ) + s • H) := by
+    funext ω
+    simp only [amplitude]
+    field_simp [hden]
+    ring
+  rw [hfun]
+  simp only [map_smul, map_add]
+  rw [hEone, hEH]
+  ring
 
-The assumptions are precisely the first two moments needed by the calculation;
-positivity of the expectation is not needed for this identity.
+/--
+Exact pair cancellation from a covariance `-β` and the tuning relation
+`s² β = 1`. Positivity of the expectation is not needed for the identity.
 -/
-theorem expectation_pair_cancellation
+theorem expectation_pair_cancellation_of_covariance
     {Ω : Type*}
     (E : (Ω → ℝ) →ₗ[ℝ] ℝ)
     (H₁ H₂ : Ω → ℝ)
-    {s : ℝ}
+    {s β : ℝ}
     (hs : 0 < s)
     (hEone : E (1 : Ω → ℝ) = 1)
     (hE₁ : E H₁ = 0)
     (hE₂ : E H₂ = 0)
-    (hE₁₂ : E (fun ω => H₁ ω * H₂ ω) = -(1 / s ^ 2)) :
+    (hE₁₂ : E (fun ω => H₁ ω * H₂ ω) = -β)
+    (hscale : s ^ 2 * β = 1) :
     E (fun ω => amplitude s (H₁ ω) * amplitude s (H₂ ω)) = 0 := by
   have hden : 1 + s ≠ 0 := by linarith
   let C : Ω → ℝ := fun ω => H₁ ω * H₂ ω
@@ -92,14 +134,34 @@ theorem expectation_pair_cancellation
   rw [hEone, hE₁, hE₂]
   change (1 / (1 + s) ^ 2) *
       (1 + s * 0 + s * 0 + s ^ 2 * E C) = 0
-  rw [show E C = -(1 / s ^ 2) by simpa [C] using hE₁₂]
-  have hs0 : s ≠ 0 := ne_of_gt hs
-  field_simp [hs0, hden]
+  rw [show E C = -β by simpa [C] using hE₁₂]
+  have hzero : 1 + s ^ 2 * (-β) = 0 := by
+    nlinarith [hscale]
+  rw [hzero]
   ring
 
 /--
+The same cancellation identity with covariance written as `-1 / s²`.
+-/
+theorem expectation_pair_cancellation
+    {Ω : Type*}
+    (E : (Ω → ℝ) →ₗ[ℝ] ℝ)
+    (H₁ H₂ : Ω → ℝ)
+    {s : ℝ}
+    (hs : 0 < s)
+    (hEone : E (1 : Ω → ℝ) = 1)
+    (hE₁ : E H₁ = 0)
+    (hE₂ : E H₂ = 0)
+    (hE₁₂ : E (fun ω => H₁ ω * H₂ ω) = -(1 / s ^ 2)) :
+    E (fun ω => amplitude s (H₁ ω) * amplitude s (H₂ ω)) = 0 := by
+  have hs0 : s ≠ 0 := ne_of_gt hs
+  apply expectation_pair_cancellation_of_covariance
+      E H₁ H₂ hs hEone hE₁ hE₂ hE₁₂
+  field_simp [hs0]
+
+/--
 The algebraic square-root obstruction behind pair-cancelling families.
-After the usual energy estimate `q^2 * α^2 ≤ q`, it gives `q * α^2 ≤ 1`.
+After the usual energy estimate `q² α² ≤ q`, it gives `q α² ≤ 1`.
 -/
 theorem square_root_barrier_scalar
     {q α : ℝ} (hq : 0 < q) (henergy : q ^ 2 * α ^ 2 ≤ q) :
