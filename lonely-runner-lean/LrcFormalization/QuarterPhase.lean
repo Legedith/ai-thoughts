@@ -44,7 +44,37 @@ theorem cos_add_quarterPhase_mul (x y : ℝ) :
   rw [Real.cos_sub, Real.sin_add]
   have hsqrt : (Real.sqrt 2) ^ 2 = (2 : ℝ) :=
     Real.sq_sqrt (by norm_num)
-  nlinarith
+  calc
+    (Real.sqrt 2 / 2 * (Real.cos x - Real.sin x)) *
+        (Real.sqrt 2 / 2 * (Real.cos y - Real.sin y)) =
+      ((Real.sqrt 2) ^ 2 / 4) *
+        ((Real.cos x - Real.sin x) * (Real.cos y - Real.sin y)) := by ring
+    _ = (1 / 2 : ℝ) *
+        ((Real.cos x - Real.sin x) * (Real.cos y - Real.sin y)) := by
+      rw [hsqrt]
+      ring
+    _ = (Real.cos x * Real.cos y + Real.sin x * Real.sin y -
+          (Real.sin x * Real.cos y + Real.cos x * Real.sin y)) / 2 := by ring
+
+/-- The corresponding negative-quarter-phase product has the opposite sum term. -/
+theorem cos_sub_quarterPhase_mul (x y : ℝ) :
+    Real.cos (x - quarterPhase) * Real.cos (y - quarterPhase) =
+      (Real.cos (x - y) + Real.sin (x + y)) / 2 := by
+  rw [cos_sub_quarterPhase, cos_sub_quarterPhase]
+  rw [Real.cos_sub, Real.sin_add]
+  have hsqrt : (Real.sqrt 2) ^ 2 = (2 : ℝ) :=
+    Real.sq_sqrt (by norm_num)
+  calc
+    (Real.sqrt 2 / 2 * (Real.cos x + Real.sin x)) *
+        (Real.sqrt 2 / 2 * (Real.cos y + Real.sin y)) =
+      ((Real.sqrt 2) ^ 2 / 4) *
+        ((Real.cos x + Real.sin x) * (Real.cos y + Real.sin y)) := by ring
+    _ = (1 / 2 : ℝ) *
+        ((Real.cos x + Real.sin x) * (Real.cos y + Real.sin y)) := by
+      rw [hsqrt]
+      ring
+    _ = (Real.cos x * Real.cos y + Real.sin x * Real.sin y +
+          (Real.sin x * Real.cos y + Real.cos x * Real.sin y)) / 2 := by ring
 
 /-- Symmetric quarter-phase averaging keeps the linear cosine at constant strength. -/
 theorem symmetric_quarterPhase_linear (x : ℝ) :
@@ -61,12 +91,8 @@ theorem symmetric_quarterPhase_quadratic (x y : ℝ) :
     (Real.cos (x + quarterPhase) * Real.cos (y + quarterPhase) +
         Real.cos (x - quarterPhase) * Real.cos (y - quarterPhase)) / 2 =
       Real.cos (x - y) / 2 := by
-  rw [cos_add_quarterPhase, cos_add_quarterPhase,
-    cos_sub_quarterPhase, cos_sub_quarterPhase]
-  rw [Real.cos_sub]
-  have hsqrt : (Real.sqrt 2) ^ 2 = (2 : ℝ) :=
-    Real.sq_sqrt (by norm_num)
-  nlinarith
+  rw [cos_add_quarterPhase_mul, cos_sub_quarterPhase_mul]
+  ring
 
 /-- A real linear functional annihilates all sine waves. -/
 def SineAnnihilating (L : (ℝ → ℝ) →ₗ[ℝ] ℝ) : Prop :=
