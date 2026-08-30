@@ -41,5 +41,5 @@ jobs:
           lint: false
           leanchecker: true
           axiom-audit: true
-          axiom-audit-root: LonelyRunner
+          axiom-audit-root: LrcFormalization
           use-mathlib-cache: true
