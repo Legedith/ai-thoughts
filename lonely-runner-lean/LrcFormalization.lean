@@ -5,3 +5,4 @@ import LrcFormalization.RieszFactor
 import LrcFormalization.QuarterPhase
 import LrcFormalization.GlobalPhaseFilter
 import LrcFormalization.GlobalPhaseIntegral
+import LrcFormalization.OppositionColoring
