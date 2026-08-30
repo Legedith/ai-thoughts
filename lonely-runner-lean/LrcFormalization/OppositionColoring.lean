@@ -92,11 +92,15 @@ theorem surviving_support_color_injective
   rw [hsum] at ha
   cases hσ : σ u with
   | pos =>
-      simp [FourierSign.value, hσ, AllowedImbalance] at ha
-      omega
+      have ha' :
+          (F.card : ℤ) = 0 ∨ (F.card : ℤ) = 1 ∨ (F.card : ℤ) = -1 := by
+        simpa [FourierSign.value, hσ, AllowedImbalance] using ha
+      rcases ha' with h0 | h1 | hn1 <;> omega
   | neg =>
-      simp [FourierSign.value, hσ, AllowedImbalance] at ha
-      omega
+      have ha' :
+          -(F.card : ℤ) = 0 ∨ -(F.card : ℤ) = 1 ∨ -(F.card : ℤ) = -1 := by
+        simpa [FourierSign.value, hσ, AllowedImbalance] using ha
+      rcases ha' with h0 | h1 | hn1 <;> omega
 
 /-- Every phase-surviving opposition-colored support has no repeated color. -/
 theorem surviving_support_pair_distinct
