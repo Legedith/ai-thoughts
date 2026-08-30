@@ -2,3 +2,4 @@ import LrcFormalization.BalancedAmplitude
 import LrcFormalization.EdgeCancellation
 import LrcFormalization.SupportColoring
 import LrcFormalization.RieszFactor
+import LrcFormalization.QuarterPhase
