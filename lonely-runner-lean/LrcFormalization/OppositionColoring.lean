@@ -1,11 +1,12 @@
 import LrcFormalization.GlobalPhaseFilter
+import LrcFormalization.SupportColoring
 
 /-!
 # Opposition colorings
 
 For a signed relation, a coloring need only separate vertices carrying opposite
-Fourier signs.  Independent first-harmonic phase filters then remove every
-same-sign color collision.  Consequently every relation term that survives all
+Fourier signs. Independent first-harmonic phase filters then remove every
+same-sign color collision. Consequently every relation term that survives all
 phase filters is automatically color-injective.
 
 This is the finite combinatorial core of the refined opposition-graph Riesz
@@ -16,7 +17,7 @@ namespace LonelyRunner.CorrelatedAmplitude
 
 noncomputable section
 
-variable {V C : Type*} [DecidableEq V] [DecidableEq C]
+variable {V C Ω : Type*} [DecidableEq V] [DecidableEq C]
 
 /-- Opposite Fourier signs are required to receive distinct colors. -/
 def ProperForOpposition
@@ -50,11 +51,13 @@ theorem surviving_support_color_injective
     Set.InjOn color (S : Set V) := by
   intro u hu v hv hcolor
   by_contra huv
+  have huS : u ∈ S := by simpa using hu
+  have hvS : v ∈ S := by simpa using hv
   let F : Finset V := S.filter (fun w => color w = color u)
   have huF : u ∈ F := by
-    simp [F, hu]
+    simp [F, huS]
   have hvF : v ∈ F := by
-    simp [F, hv, hcolor]
+    simp [F, hvS, hcolor]
   have hpair : ({u, v} : Finset V) ⊆ F := by
     intro w hw
     simp only [Finset.mem_insert, Finset.mem_singleton] at hw
@@ -66,13 +69,13 @@ theorem surviving_support_color_injective
   have hcard : 2 ≤ F.card := by
     rw [← hcardpair]
     exact Finset.card_le_card hpair
+  have hcardZ : (2 : ℤ) ≤ (F.card : ℤ) := by
+    exact_mod_cast hcard
   have hsame : ∀ w ∈ F, σ w = σ u := by
     intro w hw
-    have hwS : w ∈ S := by
+    have hw' : w ∈ S ∧ color w = color u := by
       simpa [F] using hw
-    have hwcolor : color w = color u := by
-      simpa [F] using hw
-    exact sign_eq_of_same_color hproper hwS hu hwcolor
+    exact sign_eq_of_same_color hproper hw'.1 huS hw'.2
   have hsum :
       colorPhaseImbalance S σ color (color u) =
         (F.card : ℤ) * (σ u).value := by
@@ -105,6 +108,21 @@ theorem surviving_support_pair_distinct
     color u ≠ color v := by
   intro hcolor
   exact huv (surviving_support_color_injective hproper hallowed hu hv hcolor)
+
+/--
+A surviving opposition-colored support can therefore be fed directly to any
+pair-cancelling amplitude family.
+-/
+theorem surviving_support_pair_zero
+    (A : PairCancellingFamily C Ω)
+    {S : Finset V} {σ : V → FourierSign} {color : V → C}
+    (hproper : ProperForOpposition S σ color)
+    (hallowed : ∀ c : C, AllowedImbalance
+      (colorPhaseImbalance S σ color c))
+    {u v : V} (hu : u ∈ S) (hv : v ∈ S) (huv : u ≠ v) :
+    A.expectation (fun ω => A.value (color u) ω * A.value (color v) ω) = 0 := by
+  apply A.pairZero
+  exact surviving_support_pair_distinct hproper hallowed hu hv huv
 
 end
 
