@@ -4,7 +4,7 @@ import LrcFormalization.SignedSwitching
 # A bounded scalar law with vanishing cubic moment
 
 The two-point law used here has value `1/2` with weight `8/9` and value `-1`
-with weight `1/9`.  It is bounded by one, has positive first and second moments,
+with weight `1/9`. It is bounded by one, has positive first and second moments,
 and has exactly zero third moment. Multiplying every Riesz amplitude by one
 common sample from this law therefore removes the complete cubic layer without
 changing positivity.
@@ -18,7 +18,7 @@ noncomputable section
 inductive CubicAtom
   | half
   | negOne
-  deriving DecidableEq, Fintype
+  deriving DecidableEq
 
 /-- The bounded scalar value. -/
 def cubicValue : CubicAtom → ℝ
