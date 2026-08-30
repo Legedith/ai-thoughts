@@ -7,3 +7,4 @@ import LrcFormalization.GlobalPhaseFilter
 import LrcFormalization.GlobalPhaseIntegral
 import LrcFormalization.OppositionColoring
 import LrcFormalization.SignedSwitching
+import LrcFormalization.CubicScalar
